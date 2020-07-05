@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false
+    username: root
+    # password: ENC(j03z6tFoQuEwJDLRpaFFZM/DCkl+6zNWskALNVRaLFbr8YJ2ZGzLg2smgeCfa0SV) # 123456
+    # ENC 通过
+    # jasypt.encryptor.property.prefix=CodeSheep(
+    # jasypt.encryptor.property.suffix=)
+    # 设置
+    password: CodeSheep(j03z6tFoQuEwJDLRpaFFZM/DCkl+6zNWskALNVRaLFbr8YJ2ZGzLg2smgeCfa0SV) # 123456
+  jpa:
+    database: MySQL
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+# jasypt会使用这个自定义加密密钥，对配置文件里的重要项进行加密。
+
+jasypt:
+  encryptor:
+    property:
+      prefix: CodeSheep(
+      suffix: )
+    # 有风险： 加密密钥jasypt.encryptor.password=CodeSheep泄露了，那我们的加密字段也还是有可能被别人解密
+    password: CodeSheep88  # 外部化配置中 配置了 jasypt.encryptor.password 则 此配置就失效了
+    # {@link com.nousin.configure.encryption.CodeSheepEncryptorConfig.codeSheepStringEncryptor}
+    # 使用了配置类后配置类定义了password 则 jasypt.encryptor.password 配置就失效了
+    bean: codeSheepEncryptorBean
